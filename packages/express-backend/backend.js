@@ -31,7 +31,7 @@ const users = {
         job: "Bartender"
       }
     ]
-  };
+};
 
 const findUserByName = (name) => {
     return users["users_list"].filter(
@@ -39,8 +39,24 @@ const findUserByName = (name) => {
     );
 };
 
-const findUserById = (id) =>
-  users["users_list"].find((user) => user["id"] === id);
+const findUserById = (id) => {
+    return users["users_list"].find((user) => user["id"] === id);
+}
+
+const addUser = (user) => {
+  users["users_list"].push(user);
+  return user;
+};
+
+const deleteUser = (id) => {
+    const index = users["users_list"].findIndex((user) => user["id"] === id);
+    if (index != -1) {
+        users["users_list"].splice(index, 1);
+        return true;
+    } else {
+        return false
+    }
+}
 
 app.use(express.json());
 
@@ -67,6 +83,22 @@ app.get("/users/:id", (req, res) => {
     } else {
       res.send(result);
     }
+});
+
+app.delete("/users/:id", (req, res) => {
+    const id = req.params["id"];
+    let result = deleteUser(id);
+    if (result) {
+        res.send("booom");
+    } else {
+        res.status(404).send("not found boohoo :(");
+    }
+});
+
+app.post("/users", (req, res) => {
+    const userToAdd = req.body;
+    addUser(userToAdd);
+    res.send();
 });
 
 app.listen(port, () => {
