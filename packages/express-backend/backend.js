@@ -34,6 +34,10 @@ const users = {
     ]
 };
 
+const generateID = () => {
+  return Math.floor(Math.random() * (10000 - 0) + 0);
+}
+
 const findUserByName = (name) => {
     return users["users_list"].filter(
       (user) => user["name"] === name
@@ -102,7 +106,7 @@ app.delete("/users/:id", (req, res) => {
     const id = req.params["id"];
     let result = deleteUser(id);
     if (result) {
-        res.send("booom");
+        res.send();
     } else {
         res.status(404).send("not found boohoo :(");
     }
@@ -110,8 +114,9 @@ app.delete("/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
     const userToAdd = req.body;
+    userToAdd.id = generateID();
     addUser(userToAdd);
-    res.send();
+    res.status(201).send(userToAdd);
 });
 
 app.listen(port, () => {
