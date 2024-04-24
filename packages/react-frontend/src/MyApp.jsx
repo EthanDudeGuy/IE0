@@ -8,14 +8,14 @@ function MyApp() {
 
 
     function deleteUser(index) {
-        const id = characters[index].id;
-        fetch(`http://localhost:8000/users/${id}`, {
+        const _id = characters[index]._id;
+        fetch(`http://localhost:8000/users/${_id}`, {
             method: "DELETE",
         })
         .then((response) => {
             if (response.ok) {
                 setCharacters((prevCharacters) => {
-                    return prevCharacters.filter((character) => character.id !== id);
+                    return prevCharacters.filter((character) => character._id !== _id);
                 });
             } else {
                 console.log("Failed to delete user");
